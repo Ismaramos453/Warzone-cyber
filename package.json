@@ -1,0 +1,25 @@
+{
+  "name": "warzone-cyber-academy",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "lab:xss": "node --watch labs/xss-reflejado/server.js",
+    "lab:sql": "node --watch labs/login-sql/server.js",
+    "lab:privilegios": "node --watch labs/privilegios/server.js",
+    "labs": "concurrently -n XSS,SQL,IDOR -c magenta,yellow,cyan \"npm run lab:xss\" \"npm run lab:sql\" \"npm run lab:privilegios\""
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "better-sqlite3": "^12.4.1",
+    "concurrently": "^9.1.2",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "helmet": "^8.0.0",
+    "morgan": "^1.10.0"
+  }
+}

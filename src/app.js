@@ -1,0 +1,20 @@
+import express from 'express';
+import session from 'express-session';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import { env } from './config/env.js';
+import { authRouter } from './routes/auth.routes.js';
+import { appRouter } from './routes/app.routes.js';
+
+export const app = express();
+app.set('view engine', 'ejs');
+app.set('views', 'src/views');
+app.use(helmet({ contentSecurityPolicy: false }));
+app.use(morgan('dev'));
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static('src/public'));
+app.use(session({ secret: env.sessionSecret, resave: false, saveUninitialized: false, cookie: { httpOnly: true, sameSite: 'lax', secure: env.isProduction } }));
+app.use((req, res, next) => { res.locals.user = req.session.user; next(); });
+app.use(authRouter);
+app.use(appRouter);
+app.use((req, res) => res.status(404).render('errors/404'));
